@@ -15,10 +15,10 @@ public class Profesor extends Usuario implements UsuarioValido{
        
     }
     @Override
-    public boolean usuarioValido(String usr, String pwd) throws Exception{
+    public boolean usuarioValido(String usr, String pwd) throws ExcepcionUsuario{
         boolean retorno = false;
         if(usr.isEmpty() || pwd.isEmpty()){
-            throw  new Exception();
+            throw  new ExcepcionUsuario();
         }
         else{
             if(usr.equals(getUsr()) && pwd.equals(getPwd())){ 

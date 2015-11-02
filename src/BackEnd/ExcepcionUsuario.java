@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package BackEnd;
 
 /**
  *
- * @author David
+ * @author Usuario
  */
-public interface UsuarioValido {
-    //public boolean usuarioValido(String usr, String pwd) throws Exception;
-    public boolean usuarioValido(String usr, String pwd) throws ExcepcionUsuario;
+public class ExcepcionUsuario extends Exception{
+    @Override
+    public String getMessage(){
+        return "Un campo de entrada está vacio"; 
+    }
 }

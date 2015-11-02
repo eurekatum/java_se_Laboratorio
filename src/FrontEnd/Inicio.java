@@ -6,7 +6,7 @@
 
 package FrontEnd;
 
-import BackEnd.Profesor;
+import BackEnd.*;
 import java.awt.Color;
 
 /**
@@ -24,6 +24,32 @@ public class Inicio extends javax.swing.JFrame {
         this.setTitle("David Moreno");
         jPanel1.setBackground(Color.white);
         panelInicio.setVisible(false);
+        error.setVisible(false);
+    }
+    
+    public void ingresar(){
+        objProfesor = new Profesor();
+        try{
+            if(objProfesor.usuarioValido(txtUsr.getText(), txtPwd.getText())){
+                System.out.println("SI");
+                panelLogin.setVisible(false);
+                panelInicio.setVisible(true);
+                CierraUsuario objCierraUsario = new CierraUsuario(panelLogin, panelInicio);
+                objCierraUsario.pasarEtiqueta(lblMensaje);
+                Thread hiloUsuario = new Thread(objCierraUsario, "Primero");
+                Thread hiloMensaje = new Thread(objCierraUsario, "Segundo");
+                hiloUsuario.start();
+                hiloMensaje.start();
+            }
+            else{
+                System.out.println("NO");
+            }
+        }catch(ExcepcionUsuario e){
+            error.setVisible(true);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -42,10 +68,12 @@ public class Inicio extends javax.swing.JFrame {
         txtPwd = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnIngresar = new javax.swing.JButton();
+        error = new javax.swing.JLabel();
         panelInicio = new javax.swing.JPanel();
+        lblMensaje = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout());
+        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -55,6 +83,12 @@ public class Inicio extends javax.swing.JFrame {
 
         jLabel1.setText("Usuario:");
 
+        txtPwd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPwdActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Password:");
 
         btnIngresar.setText("Ingresar");
@@ -63,6 +97,9 @@ public class Inicio extends javax.swing.JFrame {
                 btnIngresarActionPerformed(evt);
             }
         });
+
+        error.setForeground(new java.awt.Color(255, 0, 51));
+        error.setText("Error de entrada");
 
         javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
         panelLogin.setLayout(panelLoginLayout);
@@ -75,7 +112,10 @@ public class Inicio extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnIngresar)
+                    .addGroup(panelLoginLayout.createSequentialGroup()
+                        .addComponent(btnIngresar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(error))
                     .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(txtUsr, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                         .addComponent(txtPwd)))
@@ -92,7 +132,9 @@ public class Inicio extends javax.swing.JFrame {
                     .addComponent(txtPwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnIngresar)
+                .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnIngresar)
+                    .addComponent(error))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -100,11 +142,17 @@ public class Inicio extends javax.swing.JFrame {
         panelInicio.setLayout(panelInicioLayout);
         panelInicioLayout.setHorizontalGroup(
             panelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 396, Short.MAX_VALUE)
+            .addGroup(panelInicioLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lblMensaje)
+                .addContainerGap(339, Short.MAX_VALUE))
         );
         panelInicioLayout.setVerticalGroup(
             panelInicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(panelInicioLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(lblMensaje)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -116,7 +164,7 @@ public class Inicio extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,7 +173,7 @@ public class Inicio extends javax.swing.JFrame {
                 .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(panelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
@@ -136,20 +184,13 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // TODO add your handling code here:
-        objProfesor = new Profesor();
-        try{
-            if(objProfesor.usuarioValido(txtUsr.getText(), txtPwd.getText())){
-                System.out.println("SI");
-                panelLogin.setVisible(false);
-                panelInicio.setVisible(true);
-            }
-            else{
-                System.out.println("NO");
-            }
-        }catch(Exception e){
-            System.out.println("VACIO");
-        }
+        ingresar();
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void txtPwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPwdActionPerformed
+        // TODO add your handling code here:
+        ingresar();
+    }//GEN-LAST:event_txtPwdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,9 +229,11 @@ public class Inicio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
+    private javax.swing.JLabel error;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblMensaje;
     private javax.swing.JPanel panelInicio;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JTextField txtPwd;
